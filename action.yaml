@@ -1,0 +1,48 @@
+name: 'npm-install'
+description: >-
+  A composite action to install and cache node modules.
+inputs:
+  package-dir-path:
+    description: 'Path of dir with package.json.'
+    required: true
+    default: './'
+  modules-dir:
+    description: 'Path of node_modules dir.'
+    required: true
+    default: '${{ inputs.package-dir-path }}/node_modules'
+  cache-key:
+    description: 'The cache key.'
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Set vars 🔑'
+      id: 'vars'
+      shell: 'bash'
+      run: |-
+        if [ -n "${{ inputs.cache-key }}" ]; then
+          echo "cache-key=${{ inputs.cache-key }}" >> "$GITHUB_OUTPUT"
+        else
+          ci_env="${{ runner.os }}-${{ runner.arch }}"
+          versions="node_v$(node --version)-npm_v$(npm --version)"
+          hash="${{ hashFiles('${{ inputs.package-dir-path }}/package-lock.json') }}"
+
+          echo "cache-key=$ci_env-$versions-$hash" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: 'Restore node modules 🧩'
+      uses: 'actions/cache/restore@v3'
+      id: 'restore-cache'
+      with:
+        key: '${{ steps.vars.outputs.cache-key }}'
+        path: '${{ inputs.modules-dir }}'
+
+    - name: 'Install node modules 📥'
+      shell: 'bash'
+      run: 'npm install'
+
+    - name: 'Cache node modules 🧩'
+      uses: 'actions/cache/save@v3'
+      id: 'save-cache'
+      with:
+        key: '${{ steps.vars.outputs.cache-key }}'
+        path: '${{ inputs.modules-dir }}'

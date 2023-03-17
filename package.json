@@ -1,0 +1,26 @@
+{
+  "name": "npm-install",
+  "version": "0.0.1",
+  "description": "Installs node modules, with caching.",
+  "scripts": {
+    "format": "prettier --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dudeofawesome/npm-install.git"
+  },
+  "keywords": [
+    "github-actions",
+    "npm",
+    "cache"
+  ],
+  "author": "Louis Orleans <louis@orleans.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dudeofawesome/npm-install/issues"
+  },
+  "homepage": "https://github.com/dudeofawesome/npm-install#readme",
+  "devDependencies": {
+    "@dudeofawesome/code-style": "^0.1.1"
+  }
+}
