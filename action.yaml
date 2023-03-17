@@ -5,11 +5,9 @@ inputs:
   package-dir-path:
     description: 'Path of dir with package.json.'
     required: true
-    default: './'
+    default: '.'
   modules-dir:
     description: 'Path of node_modules dir.'
-    required: true
-    default: '${{ inputs.package-dir-path }}/node_modules'
   cache-key:
     description: 'The cache key.'
 runs:
@@ -19,6 +17,13 @@ runs:
       id: 'vars'
       shell: 'bash'
       run: |-
+        if [ -n "${{ inputs.modules-dir }}" ]; then
+          echo "modules-dir=${{ inputs.modules-dir }}" >> "$GITHUB_OUTPUT"
+        else
+          echo "modules-dir=${{ inputs.package-dir-path }}/node_modules" \
+            >> "$GITHUB_OUTPUT"
+        fi
+
         if [ -n "${{ inputs.cache-key }}" ]; then
           echo "cache-key=${{ inputs.cache-key }}" >> "$GITHUB_OUTPUT"
         else
