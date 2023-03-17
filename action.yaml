@@ -39,7 +39,7 @@ runs:
       id: 'restore-cache'
       with:
         key: '${{ steps.vars.outputs.cache-key }}'
-        path: '${{ inputs.modules-dir }}'
+        path: '${{ steps.vars.outputs.modules-dir }}'
 
     - name: 'Install node modules 📥'
       shell: 'bash'
@@ -50,4 +50,4 @@ runs:
       id: 'save-cache'
       with:
         key: '${{ steps.vars.outputs.cache-key }}'
-        path: '${{ inputs.modules-dir }}'
+        path: '${{ steps.vars.outputs.modules-dir }}'
