@@ -70,7 +70,7 @@ jobs:
             echo "✅ cache-key is well-formed."
           else
             echo "❌ cache-key is malformed."
-            echo '"$cache_key" does not match "$regex"'
+            echo "'$cache_key' does not match '$regex'"
             exit 1
           fi
 
