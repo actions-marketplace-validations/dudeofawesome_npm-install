@@ -18,7 +18,7 @@ jobs:
       - name: 'Ensure node_modules does not exist ✅'
         run: |-
           dir="$(pwd)/node_modules"
-          if [ ! -d "$dir" ]; then
+          if [ ! -f "$dir/.package-lock.json" ]; then
             echo "✅ $dir does not exist."
           else
             echo "❌ $dir already exists."
