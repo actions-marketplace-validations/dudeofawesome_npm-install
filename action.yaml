@@ -1,6 +1,9 @@
-name: 'npm-install'
+name: 'dudeofawesome/npm-install'
 description: >-
   A composite action to install and cache node modules.
+branding:
+  color: 'red'
+  icon: 'box'
 inputs:
   package-dir-path:
     description: 'Path of dir with package.json.'
