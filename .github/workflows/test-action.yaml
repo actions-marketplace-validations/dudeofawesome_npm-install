@@ -65,7 +65,7 @@ jobs:
       - name: 'Ensure cache-key is well-formed ✅'
         run: |-
           cache_key='${{ needs.create-cache.outputs.cache-key }}'
-          regex="^(\S*?-)?(?'os'\w+)-(?'arch'\w+)-(?'node'node_v[\d.]+)-(?'npm'npm_v[\d.]+)-(?'hash'\w+)$"
+          regex="^node_modules-(?'os'\w+)-(?'arch'\w+)-(?'node'node_v[\d.]+)-(?'npm'npm_v[\d.]+)-(?'hash'\w+)$"
           if [ echo "$cache_key" grep -P -q "$regex" ]; then
             echo "✅ cache-key is well-formed."
           else

@@ -38,7 +38,8 @@ runs:
           versions="node_$(node --version)-npm_v$(npm --version)"
           hash="${{ hashFiles('${{ inputs.package-dir-path }}/package-lock.json') }}"
 
-          echo "cache-key=$ci_env-$versions-$hash" >> "$GITHUB_OUTPUT"
+          echo "cache-key=node_modules-$ci_env-$versions-$hash" \
+            >> "$GITHUB_OUTPUT"
         fi
 
     - name: 'Restore node modules 🧩'
