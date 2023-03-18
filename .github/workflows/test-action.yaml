@@ -108,5 +108,6 @@ jobs:
         continue-on-error: true
         run: |-
           gh extension install actions/gh-actions-cache
-          gh actions-cache delete "test" --repo ${{ github.repository }} \
+          gh actions-cache delete "${{ needs.create-cache.outputs.cache-key }}" \
+            --repo ${{ github.repository }} \
             --confirm
