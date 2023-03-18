@@ -36,6 +36,7 @@ runs:
         else
           ci_env="${{ runner.os }}-${{ runner.arch }}"
           versions="node_$(node --version)-npm_v$(npm --version)"
+          ls -lha "${{ inputs.package-dir-path }}/package-lock.json"
           hash="${{ hashFiles('${{ inputs.package-dir-path }}/package-lock.json') }}"
 
           echo "cache-key=node_modules-$ci_env-$versions-$hash" \
