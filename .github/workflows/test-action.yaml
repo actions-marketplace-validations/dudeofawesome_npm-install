@@ -95,4 +95,5 @@ jobs:
         continue-on-error: true
         run: |-
           gh extension install actions/gh-actions-cache
-          gh actions-cache delete "test" --confirm
+          gh actions-cache delete "test" --repo ${{ github.repository }} \
+            --confirm
