@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  test:
+  create-cache:
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'Checkout Repository 🛎️'
@@ -14,6 +14,11 @@ jobs:
         with:
           cache: 'npm'
           cache-dependency-path: 'package-lock.json'
+      - name: 'Delete pre-existing test cache 🔥'
+        run: |-
+          gh actions-cache delete "test" \
+            -R ${{ github.repository }} -B ${{ github.ref_name }} \
+            --confirm
 
       - name: 'Ensure node_modules does not exist ✅'
         run: |-
@@ -46,6 +51,11 @@ jobs:
             exit 1
           fi
 
+  test-cache:
+    runs-on: 'ubuntu-latest'
+    needs:
+      - 'create-cache'
+    steps:
       - name: 'Restore test cache 🧩'
         uses: 'actions/cache/restore@v3'
         id: 'restore-cache'
@@ -66,3 +76,16 @@ jobs:
             ls -lha "$dir"
             exit 1
           fi
+
+  cleanup:
+    runs-on: 'ubuntu-latest'
+    needs:
+      - 'create-cache'
+      - 'test-cache'
+    if: 'always()'
+    steps:
+      - name: 'Delete test cache 🔥'
+        run: |-
+          gh actions-cache delete "test" \
+            -R ${{ github.repository }} -B ${{ github.ref_name }} \
+            --confirm
