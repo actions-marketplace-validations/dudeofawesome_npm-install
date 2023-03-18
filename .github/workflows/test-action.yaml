@@ -40,8 +40,6 @@ jobs:
       - name: 'Install node modules 📥'
         id: 'install'
         uses: './'
-        with:
-          cache-key: 'test'
 
       - name: 'Ensure node_modules exists ✅'
         run: |-
