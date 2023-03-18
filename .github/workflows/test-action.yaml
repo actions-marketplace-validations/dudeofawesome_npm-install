@@ -56,6 +56,7 @@ jobs:
             exit 1
           fi
     outputs:
+      modules-dir: '${{ steps.install.outputs.modules-dir }}'
       cache-key: '${{ steps.install.outputs.cache-key }}'
 
   test-cache:
@@ -69,12 +70,13 @@ jobs:
         with:
           key: '${{ needs.create-cache.outputs.cache-key }}'
           # path: '${{ runner.temp }}/cache-${{ needs.create-cache.outputs.cache-key }}'
+          path: '${{ needs.create-cache.outputs.modules-dir }}'
           fail-on-cache-miss: 'true'
 
       - name: 'Ensure cache includes node_modules ✅'
         run: |-
           # dir="${{ runner.temp }}/cache-${{ needs.create-cache.outputs.cache-key }}"
-          dir="$(pwd)/node_modules"
+          dir="${{ needs.create-cache.outputs.modules-dir }}"
           pkg_lock="$dir/.package-lock.json"
           if [ -f "$pkg_lock" ]; then
             echo "✅ $pkg_lock exists."
