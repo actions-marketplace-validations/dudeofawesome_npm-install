@@ -16,6 +16,7 @@ jobs:
           cache-dependency-path: 'package-lock.json'
       - name: 'Delete pre-existing test cache 🔥'
         run: |-
+          gh extension install actions/gh-actions-cache
           gh actions-cache delete "test" \
             -R ${{ github.repository }} -B ${{ github.ref_name }} \
             --confirm
@@ -86,6 +87,7 @@ jobs:
     steps:
       - name: 'Delete test cache 🔥'
         run: |-
+          gh extension install actions/gh-actions-cache
           gh actions-cache delete "test" \
             -R ${{ github.repository }} -B ${{ github.ref_name }} \
             --confirm
