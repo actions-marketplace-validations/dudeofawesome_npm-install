@@ -17,11 +17,10 @@ jobs:
       - name: 'Delete pre-existing test cache 🔥'
         env:
           GH_TOKEN: '${{ github.token }}'
+        continue-on-error: true
         run: |-
           gh extension install actions/gh-actions-cache
-          gh actions-cache delete "test" \
-            -R ${{ github.repository }} -B ${{ github.ref_name }} \
-            --confirm
+          gh actions-cache delete "test" --confirm
 
       - name: 'Ensure node_modules does not exist ✅'
         run: |-
@@ -90,8 +89,7 @@ jobs:
       - name: 'Delete test cache 🔥'
         env:
           GH_TOKEN: '${{ github.token }}'
+        continue-on-error: true
         run: |-
           gh extension install actions/gh-actions-cache
-          gh actions-cache delete "test" \
-            -R ${{ github.repository }} -B ${{ github.ref_name }} \
-            --confirm
+          gh actions-cache delete "test" --confirm
