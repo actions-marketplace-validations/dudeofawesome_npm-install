@@ -28,7 +28,7 @@ jobs:
 
       - name: 'Install node modules 📥'
         id: 'install'
-        uses: '../../action.yaml'
+        uses: './action.yaml'
         with:
           cache-key: 'test'
 
