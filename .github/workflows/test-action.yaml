@@ -22,6 +22,8 @@ jobs:
             echo "✅ $dir does not exist."
           else
             echo "❌ $dir already exists."
+            echo "Contents of $dir:"
+            ls -lha "$dir"
             exit 1
           fi
 
@@ -38,6 +40,9 @@ jobs:
             echo "✅ $dir exists."
           else
             echo "❌ $dir does not exist."
+            dir_up=$(dirname $dir)
+            echo "Contents of $dir_up:"
+            ls -lha "$dir_up"
             exit 1
           fi
 
@@ -51,10 +56,13 @@ jobs:
 
       - name: 'Ensure cache includes node_modules ✅'
         run: |-
-          pkg_lock="${{ runner.temp }}/cache-${{ steps.install.outputs.cache-key }}/.package-lock.json"
+          dir="${{ runner.temp }}/cache-${{ steps.install.outputs.cache-key }}"
+          pkg_lock="$dir/.package-lock.json"
           if [ -f "$pkg_lock" ]; then
             echo "✅ $pkg_lock exists."
           else
             echo "❌ $pkg_lock does not exist."
+            echo "Contents of $dir:"
+            ls -lha "$dir"
             exit 1
           fi
