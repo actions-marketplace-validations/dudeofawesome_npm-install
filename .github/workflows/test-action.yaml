@@ -68,12 +68,13 @@ jobs:
         id: 'restore-cache'
         with:
           key: '${{ needs.create-cache.outputs.cache-key }}'
-          path: '${{ runner.temp }}/cache-${{ needs.create-cache.outputs.cache-key }}'
+          # path: '${{ runner.temp }}/cache-${{ needs.create-cache.outputs.cache-key }}'
           fail-on-cache-miss: 'true'
 
       - name: 'Ensure cache includes node_modules ✅'
         run: |-
-          dir="${{ runner.temp }}/cache-${{ needs.create-cache.outputs.cache-key }}"
+          # dir="${{ runner.temp }}/cache-${{ needs.create-cache.outputs.cache-key }}"
+          dir="$(pwd)/node_modules"
           pkg_lock="$dir/.package-lock.json"
           if [ -f "$pkg_lock" ]; then
             echo "✅ $pkg_lock exists."
