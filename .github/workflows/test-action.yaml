@@ -55,6 +55,8 @@ jobs:
             ls -lha "$dir_up"
             exit 1
           fi
+    outputs:
+      cache-key: '${{ steps.install.outputs.cache-key }}'
 
   test-cache:
     runs-on: 'ubuntu-latest'
@@ -65,13 +67,13 @@ jobs:
         uses: 'actions/cache/restore@v3'
         id: 'restore-cache'
         with:
-          key: '${{ needs.create-cache.steps.install.outputs.cache-key }}'
-          path: '${{ runner.temp }}/cache-${{ needs.create-cache.steps.install.outputs.cache-key }}'
+          key: '${{ needs.create-cache.outputs.cache-key }}'
+          path: '${{ runner.temp }}/cache-${{ needs.create-cache.outputs.cache-key }}'
           fail-on-cache-miss: 'true'
 
       - name: 'Ensure cache includes node_modules ✅'
         run: |-
-          dir="${{ runner.temp }}/cache-${{ needs.create-cache.steps.install.outputs.cache-key }}"
+          dir="${{ runner.temp }}/cache-${{ needs.create-cache.outputs.cache-key }}"
           pkg_lock="$dir/.package-lock.json"
           if [ -f "$pkg_lock" ]; then
             echo "✅ $pkg_lock exists."
