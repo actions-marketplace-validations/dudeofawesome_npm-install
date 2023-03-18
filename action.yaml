@@ -10,6 +10,13 @@ inputs:
     description: 'Path of node_modules dir.'
   cache-key:
     description: 'The cache key.'
+outputs:
+  modules-dir:
+    description: 'Path of node_modules dir.'
+    value: '${{ steps.vars.outputs.modules-dir }}'
+  cache-key:
+    description: 'The cache key.'
+    value: '${{ steps.vars.outputs.cache-key }}'
 runs:
   using: 'composite'
   steps:
@@ -28,7 +35,7 @@ runs:
           echo "cache-key=${{ inputs.cache-key }}" >> "$GITHUB_OUTPUT"
         else
           ci_env="${{ runner.os }}-${{ runner.arch }}"
-          versions="node_v$(node --version)-npm_v$(npm --version)"
+          versions="node_$(node --version)-npm_v$(npm --version)"
           hash="${{ hashFiles('${{ inputs.package-dir-path }}/package-lock.json') }}"
 
           echo "cache-key=$ci_env-$versions-$hash" >> "$GITHUB_OUTPUT"
