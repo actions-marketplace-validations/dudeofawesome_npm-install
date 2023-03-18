@@ -1,0 +1,61 @@
+name: 'Test Action'
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: 'Checkout Repository 🛎️'
+        uses: 'actions/checkout@v3'
+      - name: 'Use Node.js 📗'
+        uses: 'actions/setup-node@v3'
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: 'Ensure node_modules does not exist ✅'
+        run: |-
+          dir="$(pwd)/node_modules"
+          if [ ! -d "$dir" ]; then
+            echo "✅ $dir does not exist."
+          else
+            echo "❌ $dir already exists."
+            exit 1
+          fi
+
+      - name: 'Install node modules 📥'
+        id: 'install'
+        uses: '../../action.yaml'
+        with:
+          cache-key: 'test'
+
+      - name: 'Ensure node_modules exists ✅'
+        run: |-
+          dir="$(pwd)/node_modules"
+          if [ -d "$dir" ]; then
+            echo "✅ $dir exists."
+          else
+            echo "❌ $dir does not exist."
+            exit 1
+          fi
+
+      - name: 'Restore test cache 🧩'
+        uses: 'actions/cache/restore@v3'
+        id: 'restore-cache'
+        with:
+          key: '${{ steps.install.outputs.cache-key }}'
+          path: '${{ runner.temp }}/cache-${{ steps.install.outputs.cache-key }}'
+          fail-on-cache-miss: 'true'
+
+      - name: 'Ensure cache includes node_modules ✅'
+        run: |-
+          pkg_lock="${{ runner.temp }}/cache-${{ steps.install.outputs.cache-key }}/.package-lock.json"
+          if [ -f "$pkg_lock" ]; then
+            echo "✅ $pkg_lock exists."
+          else
+            echo "❌ $pkg_lock does not exist."
+            exit 1
+          fi
