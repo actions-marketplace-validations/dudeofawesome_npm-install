@@ -3,6 +3,9 @@ name: 'Test Action'
 on:
   push:
 
+permissions:
+  actions: 'write'
+
 jobs:
   create-cache:
     runs-on: 'ubuntu-latest'
